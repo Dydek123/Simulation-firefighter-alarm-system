@@ -1,0 +1,7 @@
+nbproject/
+out/
+test/
+*.xml
+*.iml
+*.mf
+.idea/
