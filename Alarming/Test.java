@@ -1,7 +1,7 @@
 package Alarming;
 
 public class Test implements Strategy{
-    String unitName;
+    private String unitName;
     public Test(String unitName) {
         this.unitName = unitName;
         action();

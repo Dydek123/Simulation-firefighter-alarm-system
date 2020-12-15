@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BaseUnit {
-    List<IVFDUnit> observerCollection = new ArrayList<>();
+    private List<IVFDUnit> observerCollection = new ArrayList<>();
 
     public void registerObserver(IVFDUnit newUnit){
         observerCollection.add(newUnit);
@@ -20,7 +20,8 @@ public class BaseUnit {
         for (IVFDUnit unit : observerCollection){
             VFDUnit unitObject = (VFDUnit) unit;
             String msg = new String(type+unitObject.getUnitName());
-            unit.notify(msg);
+            ResponseCode responseCode = unit.notify(msg);
+            System.out.println(unitObject.getUnitName()+" to base: " + responseCode + "\n");
         }
     }
 
@@ -36,6 +37,11 @@ public class BaseUnit {
         }
         while (true){
             System.out.println("Ile jednostek powiadomić?");
+            while (!scanner.hasNextInt()) {
+                System.out.println("That's not a number!");
+                scanner.next();
+                continue;
+            }
             howMany = scanner.nextInt();
             if (howMany<0 || howMany>observerCollection.size())
                 System.out.println("Wybierz poprawną liczbe jednostek");
@@ -46,6 +52,11 @@ public class BaseUnit {
             int j = 0;
             while (j < howMany) {
                 System.out.print("Wybierz numer jednostki: ");
+                while (!scanner.hasNextInt()) {
+                    System.out.println("That's not a number!");
+                    scanner.next();
+                    continue;
+                }
                 int unitNumber = scanner.nextInt();
                 if (unitNumber < 0 || unitNumber >= observerCollection.size() || unitToNorify.contains(unitNumber)) {
                     System.out.println("Wybrano niepoprawną jednostkę");

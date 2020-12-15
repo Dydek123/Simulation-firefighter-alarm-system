@@ -1,15 +1,17 @@
 package Alarming;
 
-import Firefighters.Firefighter;
+import Firefighters.IFirefighter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class VFDUnit implements IVFDUnit {
 
-    String unitName;
-    String testCode;
-    String alarmCode;
-
+    private String unitName;
+    private String testCode;
+    private String alarmCode;
+    private List<IFirefighter> firefighters = new ArrayList<>();
     public Strategy strategy;
 
     public VFDUnit(String unitName, String testCode, String alarmCode) {
@@ -58,8 +60,7 @@ public class VFDUnit implements IVFDUnit {
         }
         if (type.equals("A")){
             if (enteredCode.equals(this.alarmCode)) {
-                setAction(new Alarm(this.unitName));
-//TODO                Firefighter.sendSMS();
+                setAction(new Alarm(this.unitName, firefighters));
                 return ResponseCode.ALARM_OK;
             }
         }
@@ -75,5 +76,19 @@ public class VFDUnit implements IVFDUnit {
         Scanner sc = new Scanner(System.in);
         System.out.print(this.unitName + " kod:");
         return sc.nextLine();
+    }
+
+    public void addFirefighter(IFirefighter newFirefighter){
+        firefighters.add(newFirefighter);
+    }
+
+    public void removeFirefighter(IFirefighter firefighterToRemove){
+        firefighters.add(firefighterToRemove);
+    }
+
+    public void notifyAllFirefighters() {
+        for (IFirefighter Firefighter : firefighters){
+            Firefighter.sendSms("Alarm");
+        }
     }
 }

@@ -1,7 +1,7 @@
 package Alarming;
 
 public class Error implements Strategy{
-    String unitName;
+    private String unitName;
     public Error(String unitName) {
         this.unitName = unitName;
         action();

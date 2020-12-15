@@ -1,10 +1,17 @@
 package Alarming;
 
-public class Alarm implements Strategy{
-    String unitName;
+import Firefighters.IFirefighter;
 
-    public Alarm(String unitName) {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Alarm implements Strategy{
+    private String unitName;
+    private  List<IFirefighter> firefighters = new ArrayList<>();
+
+    public Alarm(String unitName, List<IFirefighter> firefighters) {
         this.unitName = unitName;
+        this.firefighters = firefighters;
         action();
     }
 
@@ -12,6 +19,8 @@ public class Alarm implements Strategy{
     public void action() {
         System.out.println(unitName + " ALARM !");
         System.out.println(unitName + " uzbrajam terminal DTD-53!");
-        System.out.println(unitName + " Wysyłam SMS");
+        for (IFirefighter Firefighter : firefighters){
+            Firefighter.sendSms("Alarm");
+        }
     }
 }
