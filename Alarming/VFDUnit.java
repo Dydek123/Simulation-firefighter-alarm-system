@@ -13,7 +13,7 @@ public class VFDUnit implements IVFDUnit {
     private String alarmCode;
     private List<IFirefighter> firefighters = new ArrayList<>();
     public Strategy strategy;
-
+    private ResponseCode state = ResponseCode.TEST_OK;
     public VFDUnit(String unitName, String testCode, String alarmCode) {
         this.unitName = unitName;
         this.testCode = testCode;
@@ -45,7 +45,15 @@ public class VFDUnit implements IVFDUnit {
         this.alarmCode = alarmCode;
     }
 
-
+    public void ContextInterface(){
+        if (state == ResponseCode.ALARM_OK)
+            setAction(new Alarm(this.unitName, firefighters));
+        if (state == ResponseCode.TEST_OK)
+            setAction(new Test(this.unitName));
+        if (state == ResponseCode.ERROR){
+            setAction(new Error(this.unitName));
+        }
+    }
     
     @Override
     public ResponseCode notify(String CCIR_CODE) {
@@ -54,18 +62,19 @@ public class VFDUnit implements IVFDUnit {
         String enteredCode = enterCode();
         if (type.equals("T")){
             if (enteredCode.equals(this.testCode)) {
-                setAction(new Test(this.unitName));
-                return ResponseCode.TEST_OK;
+                this.state = ResponseCode.TEST_OK;
             }
         }
-        if (type.equals("A")){
+        else if (type.equals("A")){
             if (enteredCode.equals(this.alarmCode)) {
-                setAction(new Alarm(this.unitName, firefighters));
-                return ResponseCode.ALARM_OK;
+                this.state = ResponseCode.ALARM_OK;
             }
         }
-        setAction(new Error(this.unitName));
-        return ResponseCode.ERROR;
+        else
+            this.state = ResponseCode.ERROR;
+
+        ContextInterface();
+        return this.state;
     }
 
     public void setAction(Strategy action){
