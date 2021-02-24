@@ -4,7 +4,6 @@ Application created to model the alarming process of firefighters units. The mas
 ## Table of contents
 * [Technologies](#technologies)
 * [Run application](#how-to-run)
-* [Features](#features)
 * [Design patterns](#used-design-patterns)
 * [UML Diagram](#uml-diagram)
 
